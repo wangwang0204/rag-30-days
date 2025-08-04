@@ -14,10 +14,12 @@ st.title("RAG Chatbot")
 api_key = "AIzaSyCqlp4bV1ybgaNotfZFdscWa-Cu0x7pJ3o"
 
 # === Set up model and prompt template ===
-model = ChatGoogleGenerativeAI(model="gemini-1.5-flash", google_api_key=api_key, temperature=0.7)
+model = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite", google_api_key=api_key, temperature=0.7)
+
+system_prompt = "你在 Rasmus 同學的個人網頁上工作，提供面向人資的問答服務。你會收到**Context**字段，這是從王睿洋同學的資料庫中檢索到的相關內容。請根據這些內容回答問題。如果題目涉及上下文、缺乏資料或你不知道答案，請提示用戶開啟 RAG 功能"
 prompt_template_with_rag = ChatPromptTemplate.from_messages(
     [
-        ("system", "You are a helpful AI assistant. Provide concise and informative answers."),
+        ("system", system_prompt),
         MessagesPlaceholder(variable_name="chat_history"),
         ("human", "**Human Message:**{input}\n\n**Content:**{context}") 
     ]
@@ -25,14 +27,14 @@ prompt_template_with_rag = ChatPromptTemplate.from_messages(
 
 prompt_template_without_rag = ChatPromptTemplate.from_messages(
     [
-        ("system", "You are a helpful AI assistant. Provide concise and informative answers."),
+        ("system", system_prompt),
         MessagesPlaceholder(variable_name="chat_history"),
         ("human", "**Human Message:**{input}")
     ]
 )
 
 # === Set up Vector Store ===
-vector_store = Chroma(collection_name="foo", persist_directory="chroma_db", embedding_function=GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=api_key))
+vector_store = Chroma(collection_name="my_database", persist_directory="chroma", embedding_function=GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=api_key))
 retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"k": 5})
 
 # === Set up Retrieval Chain ===
@@ -101,10 +103,22 @@ if prompt:
             full_response = ""
             placeholder = st.empty()
 
+            got_context = False
             for chunk in stream_generator:
+                if "context" in chunk and not got_context:
+                    context = chunk["context"]
+                    got_context = True
+
                 if "answer" in chunk:
                     full_response += chunk["answer"]
                     placeholder.markdown(full_response)
+            
+            if got_context:
+                with st.expander("🔎 Retrieved Context", expanded=False):
+                    for doc in context:
+                        st.markdown(f"**Source:** {doc.metadata['source']} - Chunk {doc.metadata['chunk_index']}")
+                        st.markdown(doc.page_content)
+                        st.markdown("---")
         else:
             stream_generator = chat_without_rag.stream(
                 {"input": prompt},
