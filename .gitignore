@@ -209,3 +209,4 @@ __marimo__/
 draft.md
 chroma/
 .streamlit/secrets.toml
+demo_v2.py
