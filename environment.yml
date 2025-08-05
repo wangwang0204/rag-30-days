@@ -1,0 +1,27 @@
+name: ragdb
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  # --- Core Python ---
+  - python=3.11.8
+  - pip
+
+  # --- Frameworks & Document Loaders (from Conda) ---
+  - langchain=0.3.26
+  - langchain-community=0.3.27
+  - langchain-core=0.3.68
+  - langchain-text-splitters=0.3.8
+  - google-generativeai=0.8.5
+  - langchain-chroma=0.2.3
+  - streamlit=1.47.0
+  - python-docx=1.2.0
+  - ipykernel
+
+  # --- Core Dependencies (from Pip) ---
+  - pip:
+    - chromadb==0.4.21
+    - chroma-hnswlib==0.7.3 
+    - langchain-google-genai==2.1.7
+    - PyMuPDF==1.26.3 
