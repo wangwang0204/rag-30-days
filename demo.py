@@ -33,11 +33,15 @@ prompt_template_without_rag = ChatPromptTemplate.from_messages(
 )
 
 # === Set up Vector Store ===
-vector_store = Chroma(
-    collection_name="my_database", 
-    persist_directory="chroma", 
-    embedding_function=GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=st.secrets["GOOGLE_API_KEY"])
+@st.cache_resource
+def get_vector_store():
+    return Chroma(
+        collection_name="my_database", 
+        persist_directory="chroma", 
+        embedding_function=GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=st.secrets["GOOGLE_API_KEY"])
     )
+
+vector_store = get_vector_store()
 retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"k": 5})
 
 # === Set up Retrieval Chain ===
