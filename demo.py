@@ -1,8 +1,7 @@
 import streamlit as st
 
-from langchain_chroma import Chroma
-
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+from langchain_community.vectorstores import FAISS
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
@@ -35,12 +34,12 @@ prompt_template_without_rag = ChatPromptTemplate.from_messages(
 # === Set up Vector Store ===
 @st.cache_resource
 def get_vector_store():
-    return Chroma(
-        collection_name="my_database", 
-        persist_directory="chroma", 
-        embedding_function=GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=st.secrets["GOOGLE_API_KEY"])
+    return FAISS.load_local(
+        "vector_store",
+        GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001", google_api_key=st.secrets["GOOGLE_API_KEY"]),
+        allow_dangerous_deserialization=True
     )
-
+        
 vector_store = get_vector_store()
 retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"k": 5})
 

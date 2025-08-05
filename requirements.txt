@@ -6,14 +6,12 @@ langchain==0.3.26
 langchain-community==0.3.27
 langchain-core==0.3.68
 langchain-text-splitters==0.3.8
-langchain-chroma==0.2.3
 
 # Google GenAI SDK
 langchain-google-genai==2.1.7
 
-# ChromaDB and related
-chromadb==0.4.21
-chroma-hnswlib
+# FAISS
+faiss-cpu==1.11.0
 
 # Document parsing
 python-docx==1.2.0
