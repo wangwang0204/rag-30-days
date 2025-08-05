@@ -11,10 +11,9 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.retrieval import create_retrieval_chain
 
 st.title("RAG Chatbot")
-api_key = "AIzaSyCqlp4bV1ybgaNotfZFdscWa-Cu0x7pJ3o"
 
 # === Set up model and prompt template ===
-model = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite", google_api_key=api_key, temperature=0.7)
+model = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite", google_api_key=st.secrets["GOOGLE_API_KEY"], temperature=0.7)
 
 system_prompt = "你在 Rasmus 同學的個人網頁上工作，提供面向人資的問答服務。你會收到**Context**字段，這是從王睿洋同學的資料庫中檢索到的相關內容。請根據這些內容回答問題。如果題目涉及上下文、缺乏資料或你不知道答案，請提示用戶開啟 RAG 功能"
 prompt_template_with_rag = ChatPromptTemplate.from_messages(
@@ -34,7 +33,11 @@ prompt_template_without_rag = ChatPromptTemplate.from_messages(
 )
 
 # === Set up Vector Store ===
-vector_store = Chroma(collection_name="my_database", persist_directory="chroma", embedding_function=GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=api_key))
+vector_store = Chroma(
+    collection_name="my_database", 
+    persist_directory="chroma", 
+    embedding_function=GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=st.secrets["GOOGLE_API_KEY"])
+    )
 retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"k": 5})
 
 # === Set up Retrieval Chain ===
