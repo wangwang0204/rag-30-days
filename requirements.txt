@@ -1,6 +1,3 @@
-# Core Python version
-python==3.11.8
-
 # LangChain core libraries
 langchain==0.3.26
 langchain-community==0.3.27
