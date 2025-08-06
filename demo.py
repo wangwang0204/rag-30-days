@@ -14,7 +14,7 @@ st.title("RAG Chatbot")
 # === Set up model and prompt template ===
 model = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite", google_api_key=st.secrets["GOOGLE_API_KEY"], temperature=0.7)
 
-system_prompt = "你在 Rasmus 同學的個人網頁上工作，提供面向人資的問答服務。你會收到**Context**字段，這是從王睿洋同學的資料庫中檢索到的相關內容。請根據這些內容回答問題。如果題目涉及上下文、缺乏資料或你不知道答案，請提示用戶開啟 RAG 功能"
+system_prompt = "你在 Rasmus 同學的個人網頁上工作，提供面向人資的問答服務。你會收到**Context**字段，這是從 Rasmus 同學的資料庫中檢索到的相關內容。請根據這些內容回答問題。如果題目涉及上下文、缺乏資料或你不知道答案，請提示用戶開啟 RAG 功能"
 prompt_template_with_rag = ChatPromptTemplate.from_messages(
     [
         ("system", system_prompt),
