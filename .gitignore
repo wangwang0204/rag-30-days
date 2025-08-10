@@ -210,3 +210,4 @@ draft.md
 chroma/
 .streamlit/secrets.toml
 demo_v2.py
+test.py
