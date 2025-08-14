@@ -1,4 +1,5 @@
 import streamlit as st
+import uuid
 
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -14,7 +15,12 @@ st.title("RAG Chatbot")
 # === Set up model and prompt template ===
 model = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite", google_api_key=st.secrets["GOOGLE_API_KEY"], temperature=0.7)
 
-system_prompt = "你在 Rasmus 同學的個人網頁上工作，提供面向人資的問答服務。你會收到**Context**字段，這是從 Rasmus 同學的資料庫中檢索到的相關內容。請根據這些內容回答問題。如果題目涉及上下文、缺乏資料或你不知道答案，請提示用戶開啟 RAG 功能"
+system_prompt = \
+    """
+    你在 Rasmus 同學的個人網頁上工作，提供問答服務。問題的範圍包含 Rasmus 本人的學術資料，個人經驗與專案等等。
+    請根據這些內容回答問題收到 **Context**字段，這是從 Rasmus 同學的資料庫中檢索到的相關內容。
+    如果你未收到**Context**字段並且無法回答問題，請說：「我無法回答您的問題，請開啟 RAG 功能，以檢索關於 Rasmus 的相關資訊。」
+    """.strip()
 prompt_template_with_rag = ChatPromptTemplate.from_messages(
     [
         ("system", system_prompt),
@@ -50,12 +56,17 @@ retrieval_chain = create_retrieval_chain(
 )
 
 # === Set up Message History ===
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = ChatMessageHistory()
+if "chat_histories" not in st.session_state:
+    st.session_state.chat_histories = {}
+
+def get_chat_history(session_id):
+    if session_id not in st.session_state.chat_histories:
+        st.session_state.chat_histories[session_id] = ChatMessageHistory()
+    return st.session_state.chat_histories[session_id]
 
 chat_with_rag = RunnableWithMessageHistory(
     retrieval_chain,
-    lambda session_id: st.session_state.chat_history,  # Lambda to retrieve history from session_state
+    get_chat_history,
     input_messages_key="input",
     history_messages_key="chat_history",
     output_messages_key="answer"
@@ -63,12 +74,15 @@ chat_with_rag = RunnableWithMessageHistory(
 
 chat_without_rag = RunnableWithMessageHistory(
     prompt_template_without_rag | model,
-    lambda session_id: st.session_state.chat_history,  # Lambda to retrieve history from session_state
+    get_chat_history,
     input_messages_key="input",
     history_messages_key="chat_history",
 )
 
-CONFIG = {"configurable": {"session_id": "streamlit_chat_session"}}  # st.session_state is unique to each user's browser session.
+if "session_id" not in st.session_state:
+    st.session_state.session_id = str(uuid.uuid4())
+
+CONFIG = {"configurable": {"session_id": st.session_state.session_id}}
 
 # === Streamlit Chat UI ===
 if "messages" not in st.session_state:
@@ -118,7 +132,8 @@ if prompt:
                 if "answer" in chunk:
                     full_response += chunk["answer"]
                     placeholder.markdown(full_response)
-            
+
+            # context expander
             if got_context:
                 with st.expander("🔎 Retrieved Context", expanded=False):
                     for doc in context:
