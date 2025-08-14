@@ -211,3 +211,4 @@ demo_v2.py
 streamlit_intro.py
 .devcontainer/
 vector_store/
+.DS_Store

@@ -18,7 +18,7 @@
 ### 運行方式
 **clone 資料夾**：
 ```
-git clone https://github.com/your_username/rag-30-days.git
+git clone https://github.com/wangwang0204/rag-30-days.git
 ```
 
 **下載 dependencies**（強烈建議使用提供的版本）：
