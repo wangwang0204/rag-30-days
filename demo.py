@@ -1,5 +1,6 @@
 import streamlit as st
 import uuid
+import time
 
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -97,6 +98,23 @@ selection: list = st.segmented_control(
     format_func=lambda option: option_map[option],
     selection_mode="single",
 )
+
+def greeting_message():
+    message = "你好！我是 Rasmus 的個人助手，有什麼我可以幫忙的嗎？"
+    for s in message:
+        time.sleep(0.01)  # Simulate typing delay
+        yield s
+
+if "greeting" not in st.session_state:
+    st.session_state.greeting = True
+    
+with st.chat_message("assistant"):
+    if st.session_state.greeting:
+        st.write_stream(greeting_message)
+        st.session_state.greeting = False
+    else:
+        st.markdown("你好！我是 Rasmus 的個人助手，有什麼我可以幫忙的嗎？")
+
 
 # Display previous messages from the session state.
 for message in st.session_state.messages:
