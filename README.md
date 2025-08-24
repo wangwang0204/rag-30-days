@@ -6,11 +6,11 @@
 ## About This Repo 
 *這個資料夾包含本系列前七天的內容，以下是簡介與使用說明。*
 
-`notebooks` 這個資料夾包含了所有的 Jupyter Notebook 檔案，這些檔案是本系列教學的主要內容。每個 Notebook 都會詳細說明 RAG 系統的各個組件，以及如何使用它們來構建自己的應用。其中 `day4-create_db.ipynb` 會讀取 `raw_database` 並建立一個向量資料庫 -- `vector_store/`（已在 repo 裡，streamlit app 需要讀取）。讀者可以換成自己的資料集。
+`notebooks` 這個資料夾包含了所有的 Jupyter Notebook 檔案，這些檔案是本系列教學的主要內容。每個 Notebook 都會詳細說明 RAG 系統的各個組件，以及如何使用它們來構建自己的應用。其中 `create_db.ipynb` 會讀取 `raw_database` 並建立一個向量資料庫 -- `vector_store/`（已在 repo 裡，streamlit app 需要讀取）。讀者可以換成自己的資料集。
 
 `demo.py` 是一個簡單的示範應用，展示了如何使用本系列教學中所介紹的技術來構建一個 RAG 系統。讀者可以參考這個範例，並根據自己的需求進行修改和擴展。
 
-`raw_database` 是一個包含原始文本資料的資料夾，目前提供的 **chunking** 方法範例能處理 `.txt`, `.pdf`, `.docx`, `.md` 和 `.json` 格式的文件。讀者可以替換成自己的資料集，並在 `day4-create_db.ipynb` 中進行處理。
+`raw_database` 是一個包含原始文本資料的資料夾，目前提供的 **chunking** 方法範例能處理 `.txt`, `.pdf`, `.docx`, `.md` 和 `.json` 格式的文件。讀者可以替換成自己的資料集，並在 `create_db.ipynb` 中進行處理。
 
 ### API KEY 設置
 - **notebooks**：google-genai 會自動讀取 `.env` 檔案中的 GOOGLE_API_KEY，也可以透過 `google_api_key` 參數設定。
