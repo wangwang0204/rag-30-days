@@ -1,10 +1,26 @@
 # rag-30-days
 
 ## Abstract
-《RAG 論文學習筆記 × 個人助手實作》系列的第一週，我們會介紹並使用 LangChain, FAISS, Streamlit 等工具搭建一個 RAG 系統。在學習與工作中，我們一定會累積大量的文本素材，例如履歷、作品集與各式各樣的申請書，如果一個 AI 系統能精確地從資料庫檢索我們寫過的素材，再進行生成，那對重複性高的工作申請、社團申請會方便許多。除此之外，我們也可以將系統部署在個人網站上，實現互動式、問答式的呈現。本系列的後半，會專注在RAG 領域重要文獻的閱讀，例如 DPR、HyDE 和 Agentic RAG、也會花一些篇幅探討現有的成熟應用以及圍繞 RAG 的實務議題。
+本專案展示了一個功能完善的 RAG (Retrieval-Augmented Generation) 系統的建構過程。專案旨在介紹並使用 LangChain, FAISS, Streamlit 等工具搭建一個 RAG 系統，並透過 10 篇部落格文章詳細說明其核心概念、技術與實作細節。透過本專案，讀者可以學習如何從零開始構建一個 RAG 應用，並將其應用於個人資料管理或互動式問答系統。
+
+## 核心技術
+
+本專案主要使用了以下技術和框架：
+
+*   **RAG 系統**：結合檢索與生成，提升大型語言模型回答的準確性和相關性。
+*   **LangChain**：一個強大的框架，用於開發由語言模型驅動的應用程式，簡化了 RAG 系統的建構流程。
+*   **FAISS**：用於高效相似性搜索的函式庫，在本專案中用於向量資料庫的建立與檢索。
+*   **Streamlit**：一個用於快速建立資料科學和機器學習應用程式的框架，用於構建使用者介面。
+
+## 專案內容概覽
+
+
+1.  RAG 系統的基本概念與運作原理。
+2.  如何使用 LangChain 整合不同的語言模型組件。
+3.  如何建立和管理向量資料庫 (Vector Store)，並利用 FAISS 進行高效檢索。
+4.  如何使用 Streamlit 搭建一個互動式的 RAG 應用程式。
 
 ## About This Repo 
-*這個資料夾包含本系列前七天的內容，以下是簡介與使用說明。*
 
 `notebooks` 這個資料夾包含了所有的 Jupyter Notebook 檔案，這些檔案是本系列教學的主要內容。每個 Notebook 都會詳細說明 RAG 系統的各個組件，以及如何使用它們來構建自己的應用。其中 `create_db.ipynb` 會讀取 `raw_database` 並建立一個向量資料庫 -- `vector_store/`（已在 repo 裡，streamlit app 需要讀取）。讀者可以換成自己的資料集。
 
@@ -54,6 +70,21 @@ python3 -m ipykernel install --user --display-name "<Display Name>"
 ```
 streamlit run demo.py # 需要先建立 vector store
 ```
+
+## Blogs
+
+這個專案包含了 10 篇部落格文章，詳細介紹了 RAG 系統的建構過程、LangChain 的使用、FAISS 和 Streamlit 的實作細節。這些文章位於 `blogs/` 目錄下：
+
+*   `1.Introduction.pdf`: 專案背景、目標以及 RAG 系統的基本概念。
+*   `2.RAG_intro.pdf`: 深入探討 RAG (Retrieval-Augmented Generation) 系統的原理、架構與優勢。
+*   `3.LangChain(1).pdf`: LangChain 系列第一部分，介紹核心組件及其在 RAG 系統中的應用。
+*   `4.LangChain(2).pdf`: LangChain 系列第二部分，進階說明構建複雜語言模型應用的用法。
+*   `5.LangChain(3).pdf`: LangChain 系列第三部分，涵蓋更多實用功能與最佳實踐。
+*   `6.FAISS.pdf`: 詳細介紹 FAISS 函式庫，包括安裝、使用方法及如何在 RAG 系統中建立高效向量資料庫。
+*   `7.RAG_system.pdf`: 整合前面知識，詳細說明如何從頭到尾建構一個完整的 RAG 系統。
+*   `8.Streamlit.pdf`: 介紹如何使用 Streamlit 框架為 RAG 系統建立互動式網頁應用介面。
+*   `9.Demo.pdf`: 展示 RAG 系統實際運作範例，引導讀者運行和體驗應用。
+*   `10.Summary.pdf`: 總結專案學習內容，展望 RAG 技術的未來發展與應用。
 
 ## Links
 - [RAG 個人助手 Demo](https://personal-database-rag.streamlit.app)
