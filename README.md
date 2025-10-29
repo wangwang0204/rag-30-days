@@ -89,3 +89,5 @@ streamlit run demo.py # 需要先建立 vector store
 ## Links
 - [RAG 個人助手 Demo](https://personal-database-rag.streamlit.app)
 - [Dataset, Kaggle](https://www.kaggle.com/datasets/leowang0204/simulated-personal-database-raw-data)
+
+*原本是 2025 IT 邦幫忙鐵人賽 -- 'RAG 論文學習筆記 × 個人助手實作' 的參賽作品，但我只寫了前十篇🤗，放在 `\blogs`*
